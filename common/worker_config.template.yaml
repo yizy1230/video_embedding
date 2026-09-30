@@ -1,0 +1,30 @@
+# Worker configuration template for algo celery workers.
+# Copy to your algo directory as `worker_config.yaml` and adjust as needed.
+# All values can be overridden via environment variables in deployment.
+
+broker:
+  url: "amqp://guest:guest@rabbitmq:5672//"
+
+result_backend:
+  url: "rpc://"
+
+postgres:
+  host: "postgres"
+  port: 5432
+  db: "pipeline"
+  user: "pipeline"
+  password: "pipeline"        # override via PG_PASSWORD
+
+minio:
+  endpoint: "minio:9000"
+  access_key: "minioadmin"    # override via MINIO_ACCESS_KEY
+  secret_key: "minioadmin"    # override via MINIO_SECRET_KEY
+  secure: false
+  bucket_raw: "raw-inputs"
+  bucket_clips: "derived-units"
+  bucket_results: "algo-results"
+
+cache:
+  dir: "/data/cache/pipeline"
+  enabled: true
+  max_size_gb: 100

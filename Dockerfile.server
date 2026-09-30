@@ -1,0 +1,43 @@
+# video_embedding server (FastAPI)
+# Python 3.10 | GPU (PyTorch 2.4 + CUDA 12.1) — SigLIP2
+#
+# Build (from algos/ root):
+#   docker build -f video_embedding/v1_0/Dockerfile.server -t algo-video_embedding-server:v1_0 .
+#
+# Run:
+#   docker run -d --gpus all --name server-video_embedding \
+#     -p 8000:8000 \
+#     algo-video_embedding-server:v1_0
+
+FROM pytorch/pytorch:2.4.1-cuda12.1-cudnn9-runtime
+
+WORKDIR /app
+
+# China mirrors: apt
+# China mirrors: pip
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg build-essential pkg-config \
+    libavformat-dev libavcodec-dev libavdevice-dev libavutil-dev libavfilter-dev \
+    libswscale-dev libswresample-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Server runtime dependencies (FastAPI layer on top of torch base)
+RUN pip install --no-cache-dir \
+    fastapi uvicorn pydantic requests
+
+# Algo dependencies (filter out torch*/extra-index-url, provided by base image)
+COPY requirements.txt /tmp/reqs.txt
+RUN grep -v -E '^(torch==|torchvision==|torchaudio==|--extra-index-url)' /tmp/reqs.txt > /tmp/reqs_filtered.txt \
+    && pip install --no-cache-dir -r /tmp/reqs_filtered.txt || true
+
+# Algo source (includes checkpoints/siglip2-so400m-patch16-384)
+COPY . /app/algo
+WORKDIR /app/algo
+
+ENV PYTHONPATH=/app:/app/algo
+ENV DEVICE=cuda
+
+EXPOSE 8000
+
+CMD ["python", "video_embedding_server.py", "--host", "0.0.0.0", "--port", "8000", "--device", "cuda"]

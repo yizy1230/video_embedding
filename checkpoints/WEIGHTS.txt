@@ -1,0 +1,7 @@
+# Weights are not stored in this repository.
+
+checkpoints/siglip2-so400m-patch16-384/
+  google/siglip2-so400m-patch16-384
+  https://huggingface.co/google/siglip2-so400m-patch16-384
+
+  huggingface-cli download google/siglip2-so400m-patch16-384 --local-dir checkpoints/siglip2-so400m-patch16-384

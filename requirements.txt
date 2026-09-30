@@ -1,0 +1,24 @@
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.4.1
+torchvision==0.19.1
+torchaudio==2.4.1
+Pillow>=7.0.0
+opencv-python==4.13.0.92
+av
+decord
+transformers==4.53.3
+accelerate>=0.33
+safetensors
+requests
+pydantic==2.9.0
+flask
+fastapi==0.112.2
+loguru
+gradio==4.44.1
+gradio_client==1.3.0
+huggingface-hub==0.34.4
+
+# ---------- Server and worker ----------
+numpy
+uvicorn
+jinja2

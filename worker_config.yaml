@@ -1,0 +1,29 @@
+# Celery worker config for video_embedding.
+# All values can be overridden via environment variables in deployment.
+
+broker:
+  url: "amqp://guest:guest@rabbitmq:5672//"
+
+result_backend:
+  url: "rpc://"
+
+postgres:
+  host: "postgres"
+  port: 5432
+  db: "pipeline"
+  user: "pipeline"
+  password: "pipeline"
+
+minio:
+  endpoint: "minio:9000"
+  access_key: "minioadmin"
+  secret_key: "minioadmin"
+  secure: false
+  bucket_raw: "raw-inputs"
+  bucket_clips: "derived-units"
+  bucket_results: "algo-results"
+
+cache:
+  dir: "/data/cache/pipeline"
+  enabled: true
+  max_size_gb: 100

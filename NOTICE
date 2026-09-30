@@ -1,0 +1,6 @@
+video_embedding
+Copyright 2026
+
+This operator's own code is Apache-2.0 (see LICENSE).
+
+SigLIP 2 weights are downloaded from Hugging Face and are not included.
